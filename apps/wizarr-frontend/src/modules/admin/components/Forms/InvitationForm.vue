@@ -2,20 +2,27 @@
     <div ref="invitationContainer" id="invitationContainer">
         <Transition name="fade" mode="out-in" :duration="{ enter: 200, leave: 200 }">
             <div v-if="!created && !failed">
-                <FormKit type="form" name="inviteForm" id="inviteForm" @submit="createInvite" :actions="!eventBus" v-model="invitationData" :disabled="disabled" :submit-label="__('Create Invitation')" :submit-attrs="{ inputClass: 'w-full justify-center mt-2' }">
+                <FormKit type="form" name="inviteForm" id="inviteForm" @submit="createInvite" :actions="!eventBus"
+                    v-model="invitationData" :disabled="disabled" :submit-label="__('Create Invitation')"
+                    :submit-attrs="{ inputClass: 'w-full justify-center mt-2' }">
                     <div class="space-y-4">
                         <!-- Invite Code -->
-                        <FormKit type="text" placeholder="XMFGEJI" label="Invitation Code" name="inviteCode" validation="length:6,6|uppercase" />
+                        <FormKit type="text" placeholder="XMFGEJI" label="Invitation Code" name="inviteCode"
+                            validation="length:6,6|uppercase" />
 
                         <!-- Select Expiration -->
-                        <FormKit type="select" label="Invitation Expiration" name="expiration" :options="expirationOptions" />
+                        <FormKit type="select" label="Invitation Expiration" name="expiration"
+                            :options="expirationOptions" />
 
                         <!-- Custom Expiration -->
-                        <FormKit type="datepicker" v-if="invitationData.expiration == 'custom'" format="DD/MM/YYYY HH:mm" :sequence="['year', 'month', 'day', 'time']" :min-date="new Date()" label="Custom Expiration" name="customExpiration" />
+                        <FormKit type="datepicker" v-if="invitationData.expiration == 'custom'"
+                            format="DD/MM/YYYY HH:mm" :sequence="['year', 'month', 'day', 'time']"
+                            :min-date="new Date()" label="Custom Expiration" name="customExpiration" />
                     </div>
 
                     <!-- ADVANCED OPTIONS -->
-                    <button @click="advancedOptions = !advancedOptions" type="button" class="block text-sm font-medium text-secondary dark:text-primary my-2">
+                    <button @click="advancedOptions = !advancedOptions" type="button"
+                        class="block text-sm font-medium text-secondary dark:text-primary my-2">
                         {{ __("Advanced Options") }}
                     </button>
 
@@ -29,14 +36,19 @@
                         </template>
 
                         <!-- Select Duration -->
-                        <FormKit type="select" label="User Account Duration" name="duration" :options="durationOptions" />
+                        <FormKit type="select" label="User Account Duration" name="duration"
+                            :options="durationOptions" />
 
                         <!-- Custom Duration -->
-                        <FormKit type="datepicker" v-if="invitationData.duration == 'custom'" format="DD/MM/YYYY HH:mm" :sequence="['year', 'month', 'day', 'time']" :min-date="new Date()" label="Custom Duration" name="customDuration" />
+                        <FormKit type="datepicker" v-if="invitationData.duration == 'custom'" format="DD/MM/YYYY HH:mm"
+                            :sequence="['year', 'month', 'day', 'time']" :min-date="new Date()" label="Custom Duration"
+                            name="customDuration" />
 
                         <!-- SELECT SPECIFIC LIBRARIES -->
                         <!-- @vue-ignore -->
-                        <FormKit type="dropdown" label="Select Libraries" placeholder="Select Libraries" name="libraries" :options="librariesOptions" multiple selection-appearance="tags" wrapper-class="mb-2" />
+                        <FormKit type="dropdown" label="Select Libraries" placeholder="Select Libraries"
+                            name="libraries" :options="librariesOptions" multiple selection-appearance="tags"
+                            wrapper-class="mb-2" />
                     </Collapse>
                 </FormKit>
             </div>
@@ -107,7 +119,7 @@ export default defineComponent({
                 inviteCode: "",
                 expiration: 1440 as number | null | "custom",
                 customExpiration: "" as string,
-                checkboxes: ["live_tv", "hide_user"] as string[],// Add the checkboxes you want to be checked by default
+                checkboxes: ["live_tv", "hide_user", "allow_download"] as string[],// Add the checkboxes you want to be checked by default
                 duration: "unlimited" as number | "unlimited" | "custom",
                 customDuration: "" as string,
                 libraries: [] as string[],
@@ -188,6 +200,10 @@ export default defineComponent({
                         label: "Hide User from the Login Page",
                         value: "hide_user",
                     },
+                    allow_download: {
+                        label: "Allow User to Download Content",
+                        value: "allow_download",
+                    },
                 },
                 emby: {
                     unlimited: {
@@ -201,6 +217,10 @@ export default defineComponent({
                     hide_user: {
                         label: "Hide User from the Login Page",
                         value: "hide_user",
+                    },
+                    allow_download: {
+                        label: "Allow User to Download Content",
+                        value: "allow_download",
                     },
                 },
                 plex: {
@@ -269,6 +289,7 @@ export default defineComponent({
             const plex_allow_sync = invitationData.checkboxes.includes("plex_allow_sync");
             const live_tv = invitationData.checkboxes.includes("live_tv");
             const hide_user = invitationData.checkboxes.includes("hide_user");
+            const allow_download = invitationData.checkboxes.includes("allow_download");
             const sessions = invitationData.sessions;
             const duration = invitationData.duration == "custom" ? this.$filter("toMinutes", invitationData.customDuration) : invitationData.duration == "unlimited" ? null : invitationData.duration;
             const libraries = invitationData.libraries;
@@ -280,6 +301,7 @@ export default defineComponent({
                 plex_allow_sync: plex_allow_sync,
                 live_tv: live_tv,
                 hide_user: hide_user,
+                allow_download: allow_download,
                 sessions: sessions,
                 duration: duration,
                 specific_libraries: JSON.stringify(libraries),

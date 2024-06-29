@@ -6,18 +6,12 @@
                 {{ __('Invitation Code') }}
             </h2>
             <div class="flex flex-row space-x-2">
-                <div
-                    @click="invitationCodeToggle"
-                    class="w-full border border-gray-200 dark:border-gray-700 rounded py-2 px-4 text-xs text-gray-500 dark:text-gray-400 cursor-pointer"
-                >
+                <div @click="invitationCodeToggle"
+                    class="w-full border border-gray-200 dark:border-gray-700 rounded py-2 px-4 text-xs text-gray-500 dark:text-gray-400 cursor-pointer">
                     <span>{{ invitationCodeValue }}</span>
                 </div>
-                <FormKit
-                    type="button"
-                    @click="invitationCodeCopy"
-                    data-theme="secondary"
-                    :classes="{ input: '!bg-secondary !px-3.5 h-[36px]' }"
-                >
+                <FormKit type="button" @click="invitationCodeCopy" data-theme="secondary"
+                    :classes="{ input: '!bg-secondary !px-3.5 h-[36px]' }">
                     <i class="fa-solid fa-clipboard"></i>
                 </FormKit>
             </div>
@@ -29,10 +23,8 @@
                 {{ __('Invitation Details') }}
             </h2>
             <div class="flex flex-row space-x-2">
-                <div
-                    @click="invitationExpiredToggle"
-                    class="w-full border border-gray-200 dark:border-gray-700 rounded py-2 px-4 text-xs text-gray-500 dark:text-gray-400 cursor-pointer"
-                >
+                <div @click="invitationExpiredToggle"
+                    class="w-full border border-gray-200 dark:border-gray-700 rounded py-2 px-4 text-xs text-gray-500 dark:text-gray-400 cursor-pointer">
                     <span v-if="invitation.expires === null">{{
                         __('No expiration')
                     }}</span>
@@ -55,7 +47,8 @@
                 </template>
 
                 <template v-for="(data, label) in selectsOptions[0]" :key="label">
-                    <FormKit type="select" :label="data.label" :name="label" :options="data.options" :value="data.value" disabled />
+                    <FormKit type="select" :label="data.label" :name="label" :options="data.options" :value="data.value"
+                        disabled />
                 </template>
             </div>
         </div>
@@ -110,6 +103,10 @@ export default defineComponent({
                         label: "Hide User from the Login Page",
                         value: this.invitation.hide_user,
                     },
+                    allow_download: {
+                        label: "Allow User to Download Content",
+                        value: this.invitation.allow_download,
+                    },
                 },
                 emby: {
                     unlimited: {
@@ -123,6 +120,10 @@ export default defineComponent({
                     hide_user: {
                         label: "Hide User from the Login Page",
                         value: this.invitation.hide_user,
+                    },
+                    allow_download: {
+                        label: "Allow User to Download Content",
+                        value: this.invitation.allow_download,
                     },
                 },
                 plex: {
